@@ -6,7 +6,18 @@ db.loadDatabase();
 
 
 
-var getAllEvents = () => {
+var getAllEvents = (req, res) => {
+	db.find({}, (err, docs) => { 
+		if(err){
+			return res.status(500).json({ 
+				error: 'Internal server error' 
+			});					
+		}
+		
+		return res.status(200).json({ 
+			events: docs,
+		});
+	});
 
 };
 
@@ -51,13 +62,11 @@ const addEvent = (req, res) => {
 				events: newDocs,
 			});
 		});
-
 	});
-
 };
 
 
-var getByActor = () => {
+var getByActor = (req, res) => {
 
 };
 
