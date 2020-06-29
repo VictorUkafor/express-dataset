@@ -6,7 +6,7 @@ db.loadDatabase();
 
 
 
-var getAllEvents = (req, res) => {
+const getAllEvents = (req, res) => {
 	db.find({}, (err, docs) => { 
 		if(err){
 			return res.status(500).json({ 
@@ -42,7 +42,7 @@ const addEvent = (req, res) => {
 			});	
 		}
 
-		const eventExist = docs.find(each => each.id = event.id);
+		const eventExist = docs.find(each => each.id == event.id);
 
 		if(eventExist){
 			return res.status(400).json({ 
@@ -58,7 +58,7 @@ const addEvent = (req, res) => {
 			}
 			
 			return res.status(201).json({ 
-				'success': 'Event added successfully',
+				success: 'Event added successfully',
 				events: newDocs,
 			});
 		});
@@ -66,12 +66,32 @@ const addEvent = (req, res) => {
 };
 
 
-var getByActor = (req, res) => {
+const getByActor = (req, res) => {
+	const { actorId } = req.params;
+	db.find({}, (err, docs) => { 
+		if(err){
+			return res.status(500).json({ 
+				error: 'Internal server error' 
+			});					
+		}
 
+		const byAnActor = docs.filter(each => each.actor.id == actorId);
+		
+		return res.status(200).json({ events: byAnActor });
+	});
 };
 
 
-var eraseEvents = () => {
+const eraseEvents = (req, res) => {
+	db.remove({}, { multi: true }, (err, numRemoved) => {
+		if(err){
+			return res.status(500).json({ 
+				error: 'Internal server error' 
+			});					
+		}
+
+		return res.status(200).json({ success: 'Events removed successfully' });		
+	});
 
 };
 
