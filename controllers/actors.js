@@ -114,15 +114,15 @@ const getStreak = (req, res) => {
 
 		// get actor based on their streak
 		docs.map(doc => {
+			const lastDay = new Date(doc.created_at).getDate();
+
 			if(actorEvents[doc.actor.id]){
-				const date = new Date(doc.created_at).getDate();
-				if(date > actorEvents[doc.actor.id].lastDay){
+				if(lastDay > actorEvents[doc.actor.id].lastDay){
 					actorEvents[doc.actor.id].days += 1;
-					actorEvents[doc.actor.id].lastDay = doc.created_at.getDate();
+					actorEvents[doc.actor.id].lastDay = lastDay;
 				    actorEvents[doc.actor.id].latestEvent = doc;					
 				}
 			} else {
-				const lastDay = new Date(doc.created_at).getDate();
 				actorEvents[doc.actor.id] = { 
 					days: 1,
 					lastDay,
