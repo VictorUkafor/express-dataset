@@ -1,5 +1,5 @@
 const Datastore = require('nedb');
-const db = new Datastore({ filename : 'events', autoload: true });
+const db = new Datastore({ filename : 'database', autoload: true });
 
 db.loadDatabase();
 
