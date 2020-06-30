@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
-// Routes related to actor.
+const actorsController = require('../controllers/actors');
+
+router.put('/', actorsController.updateActor);
+
 
 module.exports = router;

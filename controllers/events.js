@@ -1,9 +1,4 @@
-
-const Datastore = require('nedb');
-const db = new Datastore({ filename : 'events', autoload: true });
-
-db.loadDatabase();
-
+const db = require('../config');
 
 
 const getAllEvents = (req, res) => {
@@ -22,29 +17,30 @@ const getAllEvents = (req, res) => {
 };
 
 const addEvent = (req, res) => {
-	const { event } = req.body;
-	db.find({}, (err, docs) => { 
+	const { event } = req.body;		
+	
+	if(!event){
+		return res.status(400).json({ 
+			error: 'Please pass a JSON event' 
+		});	
+	}
+
+	if(!event.id){
+		return res.status(400).json({ 
+			error: 'Please pass an ID to the event JSON' 
+		});	
+	}
+
+	db.find({ id: event.id }, (err, docs) => { 
 		if(err){
 			return res.status(500).json({ 
 				error: 'Internal server error' 
 			});					
 		}
 
-		if(!event){
-			return res.status(400).json({ 
-				error: 'Please pass a JSON event' 
-			});	
-		}
+		//const eventExist = docs.find(each => each.id == event.id);
 
-		if(!event.id){
-			return res.status(400).json({ 
-				error: 'Please pass an ID to the event JSON' 
-			});	
-		}
-
-		const eventExist = docs.find(each => each.id == event.id);
-
-		if(eventExist){
+		if(docs.length){
 			return res.status(400).json({ 
 				error: 'An event with this id already exist' 
 			});	
@@ -61,6 +57,7 @@ const addEvent = (req, res) => {
 				success: 'Event added successfully',
 				events: newDocs,
 			});
+			
 		});
 	});
 };
@@ -94,6 +91,7 @@ const eraseEvents = (req, res) => {
 	});
 
 };
+
 
 module.exports = {
 	getAllEvents,
