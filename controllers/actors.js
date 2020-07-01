@@ -29,13 +29,7 @@ const getAllActors = (req, res) => {
 		});
 
 
-		const sortedEvents = Object.values(actorEvents).sort((a, b) =>  
-		// sort by number of events in descending order
-		b.count - a.count && 
-		// sort by created_at of events in descending order
-		new Date(b.latestEvent.created_at).getTime() - new Date(a.latestEvent.created_at).getTime() &&
-		// sort by login of actor in descending order
-		b.actor.login - a.actor.login);
+		const sortedEvents = Object.values(actorEvents).sort((a, b) =>  b.count - a.count);
 
 		const actors = sortedEvents.map(each => each.actor);
 
@@ -133,10 +127,7 @@ const getStreak = (req, res) => {
 		});
 
         // sort events
-		const sortEvents = Object.values(actorEvents).sort((a, b) =>  
-		b.days - a.days && 
-		new Date(b.latestEvent.created_at).getTime() - new Date(a.latestEvent.created_at).getTime() &&
-		b.actor.login - a.actor.login);
+		const sortEvents = Object.values(actorEvents).sort((a, b) => b.days - a.days);
 
 		const actors = sortEvents.map(each => each.actor);
 
