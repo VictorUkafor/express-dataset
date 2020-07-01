@@ -71,7 +71,7 @@ const getByActor = (req, res) => {
 	const { actorId } = req.params;
 
 	// find events with the actor id of actorId
-	db.find({ "actor.id": actorId }, (err, docs) => { 
+	db.find({ "actor.id": parseInt(actorId) }, (err, docs) => { 
 		if(err){
 			return res.status(500).json({ 
 				error: 'Internal server error' 
