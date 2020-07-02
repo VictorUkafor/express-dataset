@@ -55,24 +55,24 @@ const getAllActors = (req, res) => {
 
 // method for updating the avatar URL of the actor
 const updateActor = (req, res) => {
-	const { actor } = req.body;		
+	const { body } = req;		
 	
-	// if actor is not passed
-	if(!actor){
+	// if body is not passed
+	if(!body){
 		return res.status(400).json({ 
-			error: 'Please pass the actor JSON' 
+			error: 'Please pass the body JSON' 
 		});	
 	}
 
-	// if the id of the actor is not found
-	if(!actor.id){
+	// if the id of the body is not found
+	if(!body.id){
 		return res.status(400).json({ 
-			error: 'An id is required in the actor JSON' 
+			error: 'An id is required in the body JSON' 
 		});	
 	}
 
 	// find events with an actor id of actor.id
-	db.find({ "actor.id": actor.id }, (err, docs) => { 
+	db.find({ "actor.id": body.id }, (err, docs) => { 
 		if(err){
 			return res.status(500).json({ 
 				error: 'Internal server error', 
@@ -87,9 +87,9 @@ const updateActor = (req, res) => {
 			});				
 		}
 
-		// update all events with an actor id of actor.id
-		db.update({ "actor.id": actor.id }, 
-		{ $set: { "actor.avatar_url": actor.avatar_url } }, 
+		// update all events with an actor id of body.id
+		db.update({ "actor.id": body.id }, 
+		{ $set: { "actor.avatar_url": body.avatar_url } }, 
 		{ multi: true, returnUpdatedDocs: true }, (err, updatedDocs) => {
 			if(err){
 				return res.status(500).json({ 

@@ -21,17 +21,17 @@ const getAllEvents = (req, res) => {
 const addEvent = (req, res) => {
 	const { body } = req;		
 	
-	//if event JSON is not passed to request body
+	//if body JSON is not passed to request body
 	if(!body){
 		return res.status(400).json({ 
-			error: 'Please pass a JSON event' 
+			error: 'Please pass a JSON body' 
 		});	
 	}
 
-	// if id is not passed to event JSON
+	// if id is not passed to body JSON
 	if(!body.id){
 		return res.status(400).json({ 
-			error: 'Please pass an ID to the event JSON' 
+			error: 'Please pass an ID to the body JSON' 
 		});	
 	}
 
