@@ -19,24 +19,24 @@ const getAllEvents = (req, res) => {
 
 // method for posting events
 const addEvent = (req, res) => {
-	const { event } = req.body;		
+	const { body } = req;		
 	
-	// if event JSON is not passed to request body
-	if(!event){
+	//if event JSON is not passed to request body
+	if(!body){
 		return res.status(400).json({ 
 			error: 'Please pass a JSON event' 
 		});	
 	}
 
 	// if id is not passed to event JSON
-	if(!event.id){
+	if(!body.id){
 		return res.status(400).json({ 
 			error: 'Please pass an ID to the event JSON' 
 		});	
 	}
 
 	// find events with the id of event.id
-	db.find({ id: event.id }, (err, docs) => { 
+	db.find({ id: body.id }, (err, docs) => { 
 		if(err){
 			return res.status(500).json({ 
 				error: 'Internal server error' 
@@ -51,7 +51,7 @@ const addEvent = (req, res) => {
 		}
 
 		// insert event to the database
-		db.insert(event, (err, newDocs) => {
+		db.insert(body, (err, newDocs) => {
 			if(err){
 				return res.status(500).json({ 
 					error: 'Internal server error' 

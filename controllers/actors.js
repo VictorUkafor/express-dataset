@@ -29,7 +29,21 @@ const getAllActors = (req, res) => {
 		});
 
 
-		const sortedEvents = Object.values(actorEvents).sort((a, b) =>  b.count - a.count);
+		const sortedEvents = Object.values(actorEvents).sort((a, b) => {
+			
+			if(a.count === b.count){
+				if(new Date(a.latestEvent.created_at).getTime() === 
+				new Date(b.latestEvent.created_at).getTime()){
+
+					return (b.actor.login - a.actor.login);
+				}
+
+				return (new Date(b.latestEvent.created_at).getTime() - 
+				new Date(a.latestEvent.created_at).getTime());
+			} 
+			
+			return (b.count - a.count);
+		});
 
 		const actors = sortedEvents.map(each => each.actor);
 
@@ -112,7 +126,7 @@ const getStreak = (req, res) => {
 
 			if(actorEvents[doc.actor.id]){
 				if(lastDay > actorEvents[doc.actor.id].lastDay){
-					actorEvents[doc.actor.id].days += 1;
+					actorEvents[doc.actor.id].days = actorEvents[doc.actor.id].days + 1;
 					actorEvents[doc.actor.id].lastDay = lastDay;
 				    actorEvents[doc.actor.id].latestEvent = doc;					
 				}
@@ -127,7 +141,21 @@ const getStreak = (req, res) => {
 		});
 
         // sort events
-		const sortEvents = Object.values(actorEvents).sort((a, b) => b.days - a.days);
+		const sortEvents = Object.values(actorEvents).sort((a, b) => {
+			
+			if(a.days === b.days){
+				if(new Date(a.latestEvent.created_at).getTime() === 
+				new Date(b.latestEvent.created_at).getTime()){
+
+					return (b.actor.login - a.actor.login);
+				}
+
+				return (new Date(b.latestEvent.created_at).getTime() - 
+				new Date(a.latestEvent.created_at).getTime());
+			} 
+			
+			return (b.days - a.days);
+		});
 
 		const actors = sortEvents.map(each => each.actor);
 
